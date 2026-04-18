@@ -43,9 +43,23 @@ function Result({ gameData, setQuestions }) {
         </div>
       )}
 
-      <button className="pixel-btn blink-text" onClick={handleRestart}>
-        再玩一次
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
+        <button className="pixel-btn blink-text" onClick={handleRestart}>
+          再玩一次
+        </button>
+        <button 
+          className="pixel-btn" 
+          style={{ borderColor: 'var(--primary-color)', color: 'var(--primary-color)', boxShadow: '0 0 5px var(--primary-color)' }}
+          onClick={() => {
+            if (window.confirm("確定要結束遊戲並關閉分頁嗎？")) {
+              window.close();
+              window.location.href = "about:blank"; // Fallback
+            }
+          }}
+        >
+          結束遊戲
+        </button>
+      </div>
     </div>
   );
 }
