@@ -17,13 +17,17 @@ function Home({ playerId, setPlayerId, setQuestions }) {
     setError('');
     
     try {
-      const res = await fetchQuestions();
+      const res = await fetchQuestions(playerId);
       
       if (res.status === 'success' && res.data) {
         setQuestions(res.data);
         navigate('/game');
       } else {
-        setError(res.message || '載入題目失敗');
+        if (res.message === 'DUPLICATE_ID') {
+          setError('這個名稱已經有人使用了，請換一個！');
+        } else {
+          setError(res.message || '載入題目失敗');
+        }
       }
     } catch (err) {
       setError('網路連線錯誤');

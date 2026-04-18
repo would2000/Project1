@@ -9,7 +9,8 @@ function doGet(e) {
   
   if (action === 'getQuestions') {
     const count = parseInt(e.parameter.count) || 10;
-    return getQuestions(count);
+    const playerId = e.parameter.playerId;
+    return getQuestions(count, playerId);
   }
   
   return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: 'Invalid action' }))
@@ -32,9 +33,27 @@ function doPost(e) {
   }
 }
 
-// 獲取隨機題目
-function getQuestions(count) {
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME_QUESTIONS);
+// 獲取隨機題目，並檢查玩家名稱是否重複
+function getQuestions(count, playerId) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  
+  // 檢查玩家 ID 是否重複
+  if (playerId) {
+    const aSheet = ss.getSheetByName(SHEET_NAME_ANSWERS);
+    if (aSheet) {
+      const aData = aSheet.getDataRange().getValues();
+      for (let i = 1; i < aData.length; i++) {
+        if (aData[i][0] && aData[i][0].toString() === playerId.toString()) {
+          return ContentService.createTextOutput(JSON.stringify({ 
+            status: 'error', 
+            message: 'DUPLICATE_ID'
+          })).setMimeType(ContentService.MimeType.JSON);
+        }
+      }
+    }
+  }
+
+  const sheet = ss.getSheetByName(SHEET_NAME_QUESTIONS);
   const data = sheet.getDataRange().getValues();
   
   // 假設第一列是標題 (題號, 題目, A, B, C, D, 解答)
