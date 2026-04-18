@@ -146,6 +146,20 @@ function submitAnswers(id, answers, passThreshold) {
     ]);
   }
   
+  // 取得排行榜前三名
+  const finalData = aSheet.getDataRange().getValues();
+  const leaderboardData = [];
+  for (let i = 1; i < finalData.length; i++) {
+    leaderboardData.push({
+      id: finalData[i][0].toString(),
+      highScore: parseInt(finalData[i][3]) || 0
+    });
+  }
+  
+  // 依照最高分降序排序
+  leaderboardData.sort((a, b) => b.highScore - a.highScore);
+  const top3 = leaderboardData.slice(0, 3);
+  
   return ContentService.createTextOutput(JSON.stringify({
     status: 'success',
     data: {
@@ -153,7 +167,8 @@ function submitAnswers(id, answers, passThreshold) {
       total: total,
       isPass: isPass,
       isHighScore: isHighScore,
-      attempts: attempts
+      attempts: attempts,
+      leaderboard: top3
     }
   })).setMimeType(ContentService.MimeType.JSON);
 }

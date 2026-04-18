@@ -96,9 +96,8 @@ body {
   border-color: var(--accent-color);
 }
 
-/* 閃爍文字 (Insert Coin) */
+/* 閃爍文字效果已移除 (Insert Coin 等) */
 .blink-text {
-  animation: blink 1s step-end infinite;
   color: var(--accent-color);
   margin-top: 20px;
 }

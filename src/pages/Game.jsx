@@ -30,11 +30,11 @@ function Game({ playerId, questions, setGameData }) {
           setGameData(res.data);
           navigate('/result');
         } else {
-          alert('ERROR SUBMITTING: ' + res.message);
+          alert('提交錯誤: ' + res.message);
           setSubmitting(false);
         }
       } catch (err) {
-        alert('NETWORK ERROR');
+        alert('網路連線錯誤');
         setSubmitting(false);
       }
     }
@@ -43,7 +43,7 @@ function Game({ playerId, questions, setGameData }) {
   if (submitting) {
     return (
       <div className="pixel-box">
-        <h2 className="loading blink-text">CALCULATING SCORE...</h2>
+        <h2 className="loading blink-text">計算分數中...</h2>
       </div>
     );
   }
@@ -51,8 +51,8 @@ function Game({ playerId, questions, setGameData }) {
   return (
     <div className="pixel-box">
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', fontSize: '14px' }}>
-        <span>PLAYER: {playerId}</span>
-        <span>STAGE: {currentIndex + 1} / {questions.length}</span>
+        <span>玩家：{playerId}</span>
+        <span>關卡：{currentIndex + 1} / {questions.length}</span>
       </div>
 
       <div className="boss-image">
